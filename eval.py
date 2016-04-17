@@ -18,6 +18,7 @@ import pprint
 import subprocess
 import matplotlib.pyplot as plot
 import re
+import pylab
 
 ## ==============================================
 ## 			LOGGING CONFIGURATION
@@ -58,8 +59,8 @@ OPT_PATTERNS = ([ "////", "////", "o", "o", "\\\\" , "\\\\" , "//////", "//////"
 
 OPT_LABEL_WEIGHT = 'bold'
 OPT_LINE_COLORS = COLOR_MAP
-OPT_LINE_WIDTH = 3.0
-OPT_MARKER_SIZE = 6.0
+OPT_LINE_WIDTH = 6.0
+OPT_MARKER_SIZE = 8.0
 
 AXIS_LINEWIDTH = 1.3
 BAR_LINEWIDTH = 1.2
@@ -114,11 +115,13 @@ DIRECT = 1
 FIO_IO_SIZE = "4G"
 FIO_FILE_NAME = "fio" # generated file name
 RANDREPEAT = 1
+SYNC = 1
 
-FIO_RUNTIME = 5 # seconds
+FIO_RUNTIME = 10 # seconds
 
 READ_WRITE_MODES = ["randwrite", "randread",  "write", "read"]
-BLOCK_SIZES = ["512", "4096", "32768"]
+BLOCK_SIZES = ["512", "32768", "2097152"]
+#BLOCK_SIZES = ["512", "2048", "8192", "32768", "131072", "524288", "2097152"]
 
 OUTPUT_FILE = "fio.txt"
 
@@ -181,6 +184,36 @@ def saveGraph(fig, output, width, height):
 # PLOT HELPERS
 ###################################################################################
 
+def create_legend():
+	fig = pylab.figure()
+	ax1 = fig.add_subplot(111)
+
+	figlegend = pylab.figure(figsize=(9, 0.5))
+	idx = 0
+	lines = [None] * (len(DEVICE_DIRS) + 1)
+	data = [1]
+	x_values = [1]
+
+	TITLE = "Devices : "
+	LABELS = [TITLE, "NVM", "SSD", "HDD"]
+
+	lines[idx], = ax1.plot(x_values, data, linewidth = 0)
+	idx = 0
+
+	for group in xrange(len(DEVICE_DIRS)):
+		lines[idx + 1], = ax1.plot(x_values, data,
+							   color=OPT_LINE_COLORS[idx], linewidth=OPT_LINE_WIDTH,
+							   marker=OPT_MARKERS[idx], markersize=OPT_MARKER_SIZE, label=str(group))
+
+		idx = idx + 1
+
+	# LEGEND
+	figlegend.legend(lines, LABELS, prop=LEGEND_FP,
+					 loc=1, ncol=4, mode="expand", shadow=OPT_LEGEND_SHADOW,
+					 frameon=False, borderaxespad=0.0, handlelength=4)
+
+	figlegend.savefig('legend.pdf')
+
 def create_fio_line_chart(datasets):
 	fig = plot.figure()
 	ax1 = fig.add_subplot(111)
@@ -212,9 +245,11 @@ def create_fio_line_chart(datasets):
 	ax1.yaxis.set_major_locator(LinearLocator(YAXIS_TICKS))
 	ax1.minorticks_off()
 	ax1.set_ylabel("IOPS", fontproperties=LABEL_FP)
+	ax1.set_yscale('log', basey=10)
 
 	# X-AXIS
 	ax1.set_xlabel("Block size", fontproperties=LABEL_FP)
+	ax1.set_xscale('log', basex=2)
 
 	for label in ax1.get_yticklabels() :
 		label.set_fontproperties(TICK_FP)
@@ -366,6 +401,7 @@ def fio_eval():
 					+ " --randrepeat=" + str(RANDREPEAT) \
 					+ " --name=" + FIO_TEST_NAME \
 					+ " --iodepth=" + str(IODEPTH) \
+					+ " --sync=" + str(SYNC) \
 					+ " --direct=" + str(DIRECT) \
 					+ " --size=" + str(FIO_IO_SIZE) \
 					+ " --runtime=" + str(FIO_RUNTIME) \
@@ -388,6 +424,7 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='Benchmark devices with fio')
 
 	parser.add_argument("-f", "--fio", help='run fio on devices', action='store_true')
+
 	parser.add_argument("-a", "--fio_plot", help='plot fio results', action='store_true')
 
 	args = parser.parse_args()
@@ -397,3 +434,5 @@ if __name__ == '__main__':
 
 	if args.fio_plot:
 		fio_plot()
+
+	#create_legend()
