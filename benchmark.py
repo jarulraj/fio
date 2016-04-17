@@ -115,10 +115,10 @@ FIO_IO_SIZE = "4G"
 FIO_FILE_NAME = "fio" # generated file name
 RANDREPEAT = 1
 
-FIO_RUNTIME = 1 # seconds
+FIO_RUNTIME = 5 # seconds
 
 READ_WRITE_MODES = ["randwrite", "randread",  "write", "read"]
-BLOCK_SIZES = ["1024", "4096"]
+BLOCK_SIZES = ["512", "4096", "32768"]
 
 OUTPUT_FILE = "fio.txt"
 
@@ -312,7 +312,8 @@ def collect_stats(result_dir, result_file_name,
 
 			bw_raw = data[1].split('=')[1].rstrip(',')
 			bw = re.sub('[^0-9]','', bw_raw)
-			iops = data[2].split('=')[1].rstrip(',')			
+			iops_raw = data[2].split('=')[1].rstrip(',')			
+			iops = re.sub('[^0-9]','', iops_raw)
 			LOG.debug("BW : --" + bw + "--")
 			LOG.debug("IOPS : --" + iops + "--")
 	
