@@ -112,7 +112,7 @@ IOENGINE = "sync" # "libaio"
 FIO_TEST_NAME = "test" # test name
 IODEPTH = 64
 DIRECT = 1
-FIO_IO_SIZE = "4G"
+FIO_IO_SIZE = "32G"
 FIO_FILE_NAME = "fio" # generated file name
 RANDREPEAT = 1
 SYNC = 1
@@ -120,8 +120,7 @@ SYNC = 1
 FIO_RUNTIME = 10 # seconds
 
 READ_WRITE_MODES = ["randwrite", "randread",  "write", "read"]
-BLOCK_SIZES = ["512", "32768", "2097152"]
-#BLOCK_SIZES = ["512", "2048", "8192", "32768", "131072", "524288", "2097152"]
+BLOCK_SIZES = ["512", "2048", "8192", "32768", "131072", "524288", "2097152"]
 
 OUTPUT_FILE = "fio.txt"
 
