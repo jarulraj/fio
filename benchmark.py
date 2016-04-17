@@ -115,7 +115,7 @@ FIO_IO_SIZE = "4G"
 FIO_FILE_NAME = "fio" # generated file name
 RANDREPEAT = 1
 
-FIO_RUNTIME = "3" # seconds
+FIO_RUNTIME = 1 # seconds
 
 READ_WRITE_MODES = ["randwrite", "randread",  "write", "read"]
 BLOCK_SIZES = ["1024", "4096"]
