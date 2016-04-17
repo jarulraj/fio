@@ -231,7 +231,8 @@ def create_fio_line_chart(datasets):
 		for line_index, line in enumerate(x_values):
 			group_data.append(datasets[group_index][line_index][1])
 
-		LOG.info("%s group_data = %s ", group, str(group_data))
+		device = get_device(group)
+		LOG.info("%s group_data = %s ", device, str(group_data))
 
 		ax1.plot(x_values, group_data, color=OPT_LINE_COLORS[idx], linewidth=OPT_LINE_WIDTH,
 				 marker=OPT_MARKERS[idx], markersize=OPT_MARKER_SIZE, label=str(group))
@@ -261,18 +262,16 @@ def create_fio_line_chart(datasets):
 # FIO -- PLOT
 def fio_plot():
 
-	datasets = []
-
 	for READ_WRITE_MODE in READ_WRITE_MODES:
+
+		datasets = []
 	
 		for DEVICE_DIR in DEVICE_DIRS:
 	
 			# Figure out device dir
 			device = get_device(DEVICE_DIR)	
-
 			data_file = FIO_DIR + "/" + READ_WRITE_MODE + "/" + device + "/" +  IOPS_DIR + "/" + "fio.csv"
 			
-			LOG.info(data_file)
 			dataset = loadDataFile(len(BLOCK_SIZES), 2, data_file)
 			datasets.append(dataset)
 	
