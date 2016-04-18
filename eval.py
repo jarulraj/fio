@@ -120,8 +120,7 @@ SYNC = 1
 FIO_RUNTIME = 10 # seconds
 
 READ_WRITE_MODES = ["randread", "read",  "randwrite", "write"]
-BLOCK_SIZES = ["512","32768", "2097152"]
-#BLOCK_SIZES = ["512", "2048", "8192", "32768", "131072", "524288", "2097152"]
+BLOCK_SIZES = ["512", "2048", "8192", "32768", "131072", "524288", "2097152"]
 
 OUTPUT_FILE = "fio.txt"
 
@@ -364,8 +363,8 @@ def collect_stats(result_dir, result_file_name,
 				iops_scale = 1024 * 1024 * 1024
 
 			iops = float(re.sub('[^0-9]','', iops_raw)) * iops_scale
-			LOG.info("BW : --" + bw + "--")
-			LOG.info("IOPS : --" + iops + "--")
+			LOG.info("BW : --" + str(bw) + "--")
+			LOG.info("IOPS : --" + str(iops) + "--")
 	
 	# Figure out device dir
 	device = get_device(device_dir)	
