@@ -117,7 +117,7 @@ FIO_FILE_NAME = "fio" # generated file name
 RANDREPEAT = 1
 SYNC = 1
 
-FIO_RUNTIME = 30 # seconds
+FIO_RUNTIME = 10 # seconds
 
 READ_WRITE_MODES = ["randread", "read",  "randwrite", "write"]
 BLOCK_SIZES = ["512","32768", "2097152"]
@@ -352,7 +352,7 @@ def collect_stats(result_dir, result_file_name,
 				bw_scale = 1024 * 1024				
 			elif bw_raw.endswith("GB/s"):
 				bw_scale = 1024 * 1024 * 1024				
-			bw = re.sub('[^0-9]','', bw_raw) * bw_scale
+			bw = float(re.sub('[^0-9]','', bw_raw)) * bw_scale
 
 			iops_scale = 1
 			iops_raw = data[2].split('=')[1].rstrip(',')			
@@ -363,7 +363,7 @@ def collect_stats(result_dir, result_file_name,
 			elif iops_raw.endswith("G"):
 				iops_scale = 1024 * 1024 * 1024
 
-			iops = re.sub('[^0-9]','', iops_raw) * iops_scale
+			iops = float(re.sub('[^0-9]','', iops_raw)) * iops_scale
 			LOG.info("BW : --" + bw + "--")
 			LOG.info("IOPS : --" + iops + "--")
 	
