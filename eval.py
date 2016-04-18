@@ -117,10 +117,11 @@ FIO_FILE_NAME = "fio" # generated file name
 RANDREPEAT = 1
 SYNC = 1
 
-FIO_RUNTIME = 10 # seconds
+FIO_RUNTIME = 30 # seconds
 
-READ_WRITE_MODES = ["randwrite", "randread",  "write", "read"]
-BLOCK_SIZES = ["512", "2048", "8192", "32768", "131072", "524288", "2097152"]
+READ_WRITE_MODES = ["randread", "read",  "randwrite", "write"]
+BLOCK_SIZES = ["512","32768", "2097152"]
+#BLOCK_SIZES = ["512", "2048", "8192", "32768", "131072", "524288", "2097152"]
 
 OUTPUT_FILE = "fio.txt"
 
@@ -343,12 +344,28 @@ def collect_stats(result_dir, result_file_name,
 			data = line.split(',')		
 			LOG.info(line.rstrip('\n'))
 
+			bw_scale = 1
 			bw_raw = data[1].split('=')[1].rstrip(',')
-			bw = re.sub('[^0-9]','', bw_raw)
+			if bw_raw.endswith("KB/s"):
+				bw_scale = 1024
+			elif bw_raw.endswith("MB/s"):
+				bw_scale = 1024 * 1024				
+			elif bw_raw.endswith("GB/s"):
+				bw_scale = 1024 * 1024 * 1024				
+			bw = re.sub('[^0-9]','', bw_raw) * bw_scale
+
+			iops_scale = 1
 			iops_raw = data[2].split('=')[1].rstrip(',')			
-			iops = re.sub('[^0-9]','', iops_raw)
-			LOG.debug("BW : --" + bw + "--")
-			LOG.debug("IOPS : --" + iops + "--")
+			if iops_raw.endswith("K"):
+				iops_scale = 1024
+			elif iops_raw.endswith("M"):
+				iops_scale = 1024 * 1024				
+			elif iops_raw.endswith("G"):
+				iops_scale = 1024 * 1024 * 1024
+
+			iops = re.sub('[^0-9]','', iops_raw) * iops_scale
+			LOG.info("BW : --" + bw + "--")
+			LOG.info("IOPS : --" + iops + "--")
 	
 	# Figure out device dir
 	device = get_device(device_dir)	
