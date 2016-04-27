@@ -119,8 +119,8 @@ SYNC = 1
 
 FIO_RUNTIME = 10 # seconds
 
-READ_WRITE_MODES = ["randread", "read",  "randwrite", "write"]
-BLOCK_SIZES = ["512", "2048", "8192", "32768", "131072", "524288", "2097152"]
+READ_WRITE_MODES = ["randwrite", "write"]
+BLOCK_SIZES = ["512", "2048", "8192", "32768", "131072"]
 
 OUTPUT_FILE = "fio.txt"
 
