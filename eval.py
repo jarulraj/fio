@@ -246,6 +246,9 @@ def create_fio_line_chart(datasets):
 	ax1.minorticks_off()
 	ax1.set_ylabel("IOPS", fontproperties=LABEL_FP)
 	ax1.set_yscale('log', basey=10)
+	Y_MIN = pow(10, 1)
+	Y_MAX = pow(10, 8)	
+	ax1.set_ylim(Y_MIN, Y_MAX)
 
 	# X-AXIS
 	ax1.set_xlabel("Block size", fontproperties=LABEL_FP)
