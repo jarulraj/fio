@@ -245,11 +245,8 @@ def create_fio_line_chart(datasets):
 	# Y-AXIS
 	ax1.yaxis.set_major_locator(LinearLocator(YAXIS_TICKS))
 	ax1.minorticks_off()
-	ax1.set_ylabel("IOPS", fontproperties=LABEL_FP)
+	ax1.set_ylabel("Bandwidth (KB/s)", fontproperties=LABEL_FP)
 	ax1.set_yscale('log', basey=10)
-	Y_MIN = pow(10, 1)
-	Y_MAX = pow(10, 6)	
-	ax1.set_ylim(Y_MIN, Y_MAX)
 
 	# X-AXIS
 	ax1.set_xlabel("Block size", fontproperties=LABEL_FP)
@@ -280,9 +277,9 @@ def fio_plot():
 	
 		fig = create_fio_line_chart(datasets)
 	
-		fileName = READ_WRITE_MODE + ".pdf"
+		fileName = "fio-" + READ_WRITE_MODE + ".pdf"
 	
-		saveGraph(fig, fileName, width= OPT_GRAPH_WIDTH, height=OPT_GRAPH_HEIGHT/2.0)
+		saveGraph(fig, fileName, width= OPT_GRAPH_WIDTH, height=OPT_GRAPH_HEIGHT)
 
 
 ## ==============================================
