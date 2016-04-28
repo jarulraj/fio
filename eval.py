@@ -110,17 +110,18 @@ DEVICE_DIRS = [NVM_DIR, SSD_DIR, HDD_DIR]
 
 IOENGINE = "sync" # "libaio"
 FIO_TEST_NAME = "test" # test name
-IODEPTH = 64
+IODEPTH = 1
 DIRECT = 1
-FIO_IO_SIZE = "32G"
+FIO_IO_SIZE = "64G"
 FIO_FILE_NAME = "fio" # generated file name
 RANDREPEAT = 1
 SYNC = 1
+NUM_THREADS = 1
 
 FIO_RUNTIME = 10 # seconds
 
 READ_WRITE_MODES = ["randwrite", "write"]
-BLOCK_SIZES = ["512", "2048", "8192", "32768", "131072"]
+BLOCK_SIZES = ["64", "256", "1024", "4096", "16384", "65536"]
 
 OUTPUT_FILE = "fio.txt"
 
@@ -247,7 +248,7 @@ def create_fio_line_chart(datasets):
 	ax1.set_ylabel("IOPS", fontproperties=LABEL_FP)
 	ax1.set_yscale('log', basey=10)
 	Y_MIN = pow(10, 1)
-	Y_MAX = pow(10, 8)	
+	Y_MAX = pow(10, 6)	
 	ax1.set_ylim(Y_MIN, Y_MAX)
 
 	# X-AXIS
@@ -422,7 +423,8 @@ def fio_eval():
 					+ " --direct=" + str(DIRECT) \
 					+ " --size=" + str(FIO_IO_SIZE) \
 					+ " --runtime=" + str(FIO_RUNTIME) \
-					+ " --output=" + str(OUTPUT_FILE) 
+					+ " --output=" + str(OUTPUT_FILE) \
+					+ " --max-jobs=" + str(NUM_THREADS)
 					
 					LOG.info(fio_command)
 		
