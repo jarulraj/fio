@@ -121,7 +121,7 @@ NUM_THREADS = 1
 FIO_RUNTIME = 10 # seconds
 
 READ_WRITE_MODES = ["randwrite", "write"]
-BLOCK_SIZES = ["64", "256", "1024", "4096", "16384", "65536"]
+BLOCK_SIZES = ["1024", "4096", "16384", "65536"]
 
 OUTPUT_FILE = "fio.txt"
 
