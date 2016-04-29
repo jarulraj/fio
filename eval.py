@@ -67,8 +67,8 @@ BAR_LINEWIDTH = 1.2
 
 # SET FONT
 
-LABEL_FONT_SIZE = 14
-TICK_FONT_SIZE = 12
+LABEL_FONT_SIZE = 16
+TICK_FONT_SIZE = 14
 TINY_FONT_SIZE = 8
 LEGEND_FONT_SIZE = 16
 
@@ -245,7 +245,7 @@ def create_fio_line_chart(datasets):
 	# Y-AXIS
 	ax1.yaxis.set_major_locator(LinearLocator(YAXIS_TICKS))
 	ax1.minorticks_off()
-	ax1.set_ylabel("Bandwidth (KB/s)", fontproperties=LABEL_FP)
+	ax1.set_ylabel("IOPS", fontproperties=LABEL_FP)
 	ax1.set_yscale('log', basey=10)
 
 	# X-AXIS
@@ -279,7 +279,7 @@ def fio_plot():
 	
 		fileName = "fio-" + READ_WRITE_MODE + ".pdf"
 	
-		saveGraph(fig, fileName, width= OPT_GRAPH_WIDTH, height=OPT_GRAPH_HEIGHT)
+		saveGraph(fig, fileName, width= OPT_GRAPH_WIDTH, height=OPT_GRAPH_HEIGHT/1.5)
 
 
 ## ==============================================
@@ -451,4 +451,4 @@ if __name__ == '__main__':
 	if args.fio_plot:
 		fio_plot()
 
-	#create_legend()
+	create_legend()
