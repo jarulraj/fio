@@ -48,7 +48,7 @@ OPT_GRAPH_WIDTH = 400
 # to match the length of your data.
 
 NUM_COLORS = 5
-COLOR_MAP = ( '#F58A87', '#80CA86', '#9EC9E9', '#FED113', '#D89761' )
+COLOR_MAP = ('#fdc086', '#b3e2cd', '#fc8d62', '#a6cee3', '#e41a1c')
 
 OPT_COLORS = COLOR_MAP
 
@@ -59,8 +59,8 @@ OPT_PATTERNS = ([ "////", "////", "o", "o", "\\\\" , "\\\\" , "//////", "//////"
 
 OPT_LABEL_WEIGHT = 'bold'
 OPT_LINE_COLORS = COLOR_MAP
-OPT_LINE_WIDTH = 6.0
-OPT_MARKER_SIZE = 8.0
+OPT_LINE_WIDTH = 8.0
+OPT_MARKER_SIZE = 10.0
 
 AXIS_LINEWIDTH = 1.3
 BAR_LINEWIDTH = 1.2
@@ -69,8 +69,8 @@ BAR_LINEWIDTH = 1.2
 
 LABEL_FONT_SIZE = 16
 TICK_FONT_SIZE = 14
-TINY_FONT_SIZE = 8
-LEGEND_FONT_SIZE = 16
+TINY_FONT_SIZE = 10
+LEGEND_FONT_SIZE = 18
 
 SMALL_LABEL_FONT_SIZE = 10
 SMALL_LEGEND_FONT_SIZE = 10
@@ -212,7 +212,7 @@ def create_legend():
 					 loc=1, ncol=4, mode="expand", shadow=OPT_LEGEND_SHADOW,
 					 frameon=False, borderaxespad=0.0, handlelength=4)
 
-	figlegend.savefig('legend.pdf')
+	figlegend.savefig('legend_fio.pdf')
 
 def create_fio_line_chart(datasets):
 	fig = plot.figure()
@@ -265,20 +265,20 @@ def fio_plot():
 	for READ_WRITE_MODE in READ_WRITE_MODES:
 
 		datasets = []
-	
+
 		for DEVICE_DIR in DEVICE_DIRS:
-	
+
 			# Figure out device dir
-			device = get_device(DEVICE_DIR)	
+			device = get_device(DEVICE_DIR)
 			data_file = FIO_DIR + "/" + READ_WRITE_MODE + "/" + device + "/" +  IOPS_DIR + "/" + "fio.csv"
-			
+
 			dataset = loadDataFile(len(BLOCK_SIZES), 2, data_file)
 			datasets.append(dataset)
-	
+
 		fig = create_fio_line_chart(datasets)
-	
+
 		fileName = "fio-" + READ_WRITE_MODE + ".pdf"
-	
+
 		saveGraph(fig, fileName, width= OPT_GRAPH_WIDTH, height=OPT_GRAPH_HEIGHT/1.5)
 
 
@@ -295,7 +295,7 @@ def get_device(device_dir):
 		device = "SSD"
 	elif device_dir == DEVICE_DIRS[2]:
 		device = "HDD"
-		
+
 	return device
 
 # CLEAN UP RESULT DIR
@@ -317,8 +317,8 @@ def exec_cmd(cmd):
 		if verbose == True:
 			subprocess.check_call(args)
 		else:
-			subprocess.check_call(args, 
-								  stdout=subprocess.STDOUT, 
+			subprocess.check_call(args,
+								  stdout=subprocess.STDOUT,
 								  stderr=subprocess.STDOUT)
 	# Exception
 	except subprocess.CalledProcessError as e:
@@ -327,7 +327,7 @@ def exec_cmd(cmd):
 		print "Output	  :: ", e.output
 
 # COLLECT STATS
-def collect_stats(result_dir, result_file_name, 
+def collect_stats(result_dir, result_file_name,
 				  read_write_mode, device_dir, block_size):
 
 	fp = open(OUTPUT_FILE)
@@ -337,11 +337,11 @@ def collect_stats(result_dir, result_file_name,
 	# Stats
 	bw = 0
 	iops = 0
-		
+
 	# Collect stats
 	for line in lines:
-		if "iops" in line: 
-			data = line.split(',')		
+		if "iops" in line:
+			data = line.split(',')
 			LOG.info(line.rstrip('\n'))
 
 			bw_scale = 1
@@ -349,26 +349,26 @@ def collect_stats(result_dir, result_file_name,
 			if bw_raw.endswith("KB/s"):
 				bw_scale = 1024
 			elif bw_raw.endswith("MB/s"):
-				bw_scale = 1024 * 1024				
+				bw_scale = 1024 * 1024
 			elif bw_raw.endswith("GB/s"):
-				bw_scale = 1024 * 1024 * 1024				
+				bw_scale = 1024 * 1024 * 1024
 			bw = float(re.sub('[^0-9]','', bw_raw)) * bw_scale
 
 			iops_scale = 1
-			iops_raw = data[2].split('=')[1].rstrip(',')			
+			iops_raw = data[2].split('=')[1].rstrip(',')
 			if iops_raw.endswith("K"):
 				iops_scale = 1024
 			elif iops_raw.endswith("M"):
-				iops_scale = 1024 * 1024				
+				iops_scale = 1024 * 1024
 			elif iops_raw.endswith("G"):
 				iops_scale = 1024 * 1024 * 1024
 
 			iops = float(re.sub('[^0-9]','', iops_raw)) * iops_scale
 			LOG.info("BW : --" + str(bw) + "--")
 			LOG.info("IOPS : --" + str(iops) + "--")
-	
+
 	# Figure out device dir
-	device = get_device(device_dir)	
+	device = get_device(device_dir)
 
 	# Make result dir and file
 	bw_result_directory = result_dir + "/" + read_write_mode + "/" + device + "/" + BANDWIDTH_DIR
@@ -394,19 +394,19 @@ def fio_eval():
 
 		# Cleanup
 		clean_up_dir(FIO_DIR)
-		
+
 		# Go over all the readwrite modes
 		for READ_WRITE_MODE in READ_WRITE_MODES:
 
 			# Go over all the devices
-			for DEVICE_DIR in DEVICE_DIRS:		
+			for DEVICE_DIR in DEVICE_DIRS:
 
 				# Go over all the block sizes
 				for BLOCK_SIZE in BLOCK_SIZES:
-					
+
 					fio_test_file_name = DEVICE_DIR + FIO_FILE_NAME
-							
-					# fio --randrepeat=1 --ioengine=sync --name=test --iodepth=64 --direct=1 --bs=4k 
+
+					# fio --randrepeat=1 --ioengine=sync --name=test --iodepth=64 --direct=1 --bs=4k
 					# --filename=/data/fio --size=64M --readwrite=randread
 					fio_command = FIO \
 					+ " --readwrite=" + str(READ_WRITE_MODE) \
@@ -422,15 +422,15 @@ def fio_eval():
 					+ " --runtime=" + str(FIO_RUNTIME) \
 					+ " --output=" + str(OUTPUT_FILE) \
 					+ " --max-jobs=" + str(NUM_THREADS)
-					
+
 					LOG.info(fio_command)
-		
+
 					# Run command
 					exec_cmd(fio_command)
-					
+
 					# Collect stats
 					collect_stats(FIO_DIR, "fio.csv", READ_WRITE_MODE, DEVICE_DIR, BLOCK_SIZE)
-				
+
 ## ==============================================
 ## 				Main Function
 ## ==============================================
@@ -444,7 +444,7 @@ if __name__ == '__main__':
 	parser.add_argument("-a", "--fio_plot", help='plot fio results', action='store_true')
 
 	args = parser.parse_args()
-	
+
 	if args.fio:
 		fio_eval()
 
