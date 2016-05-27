@@ -47,8 +47,8 @@ OPT_GRAPH_WIDTH = 400
 # Make a list by cycling through the colors you care about
 # to match the length of your data.
 
-NUM_COLORS = 5
-COLOR_MAP = ('#fdc086', '#b3e2cd', '#fc8d62', '#a6cee3', '#e41a1c')
+NUM_COLORS = 6
+COLOR_MAP = ('#5D8AC6', '#9FD35D', '#C02500', "#003557", "#538B00", "#920000")
 
 OPT_COLORS = COLOR_MAP
 
