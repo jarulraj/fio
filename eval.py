@@ -19,6 +19,7 @@ import subprocess
 import matplotlib.pyplot as plot
 import re
 import pylab
+import math
 
 ## ==============================================
 ## 			LOGGING CONFIGURATION
@@ -245,12 +246,19 @@ def create_fio_line_chart(datasets):
 	# Y-AXIS
 	ax1.yaxis.set_major_locator(LinearLocator(YAXIS_TICKS))
 	ax1.minorticks_off()
-	ax1.set_ylabel("IOPS", fontproperties=LABEL_FP)
+	ax1.set_ylabel("IOPS (K)", fontproperties=LABEL_FP)
 	ax1.set_yscale('log', basey=10)
+	ax1.set_yticklabels(["", "0.01", "0.1", "1", "10", "100", "1000"])
+	ax1.tick_params(axis='y', which='minor', left='off', right='off')
 
 	# X-AXIS
-	ax1.set_xlabel("Block size", fontproperties=LABEL_FP)
-	ax1.set_xscale('log', basex=2)
+	ax1.set_xlabel("Block size (KB)", fontproperties=LABEL_FP)
+	ax1.set_xscale('log', basex=4)
+	XLIMIT_MIN = math.pow(2, 9.5)
+	XLIMIT_MAX = math.pow(2, 16.5)
+	ax1.set_xlim(XLIMIT_MIN, XLIMIT_MAX)
+	ax1.set_xticklabels(["", "", "1", "4", "16", "64"])
+	ax1.tick_params(axis='x', which='minor', top='off', bottom='off')
 
 	for label in ax1.get_yticklabels() :
 		label.set_fontproperties(TICK_FP)
