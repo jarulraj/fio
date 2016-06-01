@@ -287,7 +287,7 @@ def fio_plot():
 
 		fileName = "fio-" + READ_WRITE_MODE + ".pdf"
 
-		saveGraph(fig, fileName, width= OPT_GRAPH_WIDTH, height=OPT_GRAPH_HEIGHT/1.5)
+		saveGraph(fig, fileName, width= OPT_GRAPH_WIDTH, height=OPT_GRAPH_HEIGHT/2.0)
 
 
 ## ==============================================
