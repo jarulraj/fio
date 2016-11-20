@@ -80,11 +80,15 @@ AXIS_LINEWIDTH = 1.3
 BAR_LINEWIDTH = 1.2
 
 # SET TYPE1 FONTS
+# SET TYPE1 FONTS
 matplotlib.rcParams['ps.useafm'] = True
-matplotlib.rcParams['font.family'] = OPT_FONT_NAME
 matplotlib.rcParams['pdf.use14corefonts'] = True
-#matplotlib.rcParams['text.usetex'] = True
-#matplotlib.rcParams['text.latex.preamble']=[r'\usepackage{euler}']
+matplotlib.rcParams['text.usetex'] = True
+matplotlib.rcParams['text.latex.preamble']= [
+    r'\usepackage{helvet}',    # set the normal font here
+    r'\usepackage{sansmath}',  # load up the sansmath so that math -> helvet
+    r'\sansmath'               # <- tricky! -- gotta actually tell tex to use!
+]
 
 LABEL_FP = FontProperties(style='normal', size=LABEL_FONT_SIZE, weight='bold')
 TICK_FP = FontProperties(style='normal', size=TICK_FONT_SIZE)
@@ -246,13 +250,13 @@ def create_fio_line_chart(datasets):
 	# Y-AXIS
 	ax1.yaxis.set_major_locator(LinearLocator(YAXIS_TICKS))
 	ax1.minorticks_off()
-	ax1.set_ylabel("IOPS (K)", fontproperties=LABEL_FP)
+	ax1.set_ylabel(r'\textbf{IOPS (K)}', fontproperties=LABEL_FP)
 	ax1.set_yscale('log', basey=10)
 	ax1.set_yticklabels(["", "0.01", "0.1", "1", "10", "100", "1000"])
 	ax1.tick_params(axis='y', which='minor', left='off', right='off')
 
 	# X-AXIS
-	ax1.set_xlabel("Block size (KB)", fontproperties=LABEL_FP)
+	ax1.set_xlabel(r'\textbf{Block size (KB)}', fontproperties=LABEL_FP)
 	ax1.set_xscale('log', basex=4)
 	XLIMIT_MIN = math.pow(2, 9.5)
 	XLIMIT_MAX = math.pow(2, 16.5)
